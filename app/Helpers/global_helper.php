@@ -21,7 +21,7 @@ use App\Models\metadata;
 
     function set_list_award($isi) {
         $isi = str_replace("<ul>", '<ul class="fa-ul mb-0">', $isi);
-        $isi = str_replace("<li>", ' <li><span class="fa-li"><i class="fa fa-trophy"></i></span>', $isi);
+        $isi = str_replace("<li>", ' <li><i class="fa fa-trophy"></i>', $isi);
         return $isi;
 
     }

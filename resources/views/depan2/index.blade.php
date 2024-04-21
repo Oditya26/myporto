@@ -7,7 +7,7 @@
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-	<title>Kards</title>
+	<title>MyPorto</title>
 	<meta name="description" content="">  
 	<meta name="author" content="">
 
@@ -52,9 +52,10 @@
 
    		<div class="top-bar">
    			<a class="menu-toggle" href="#"><span>Menu</span></a>
-
+			
 	   		<div class="logo">
 		         <a href="{{url('/')}}">MENU</a>
+				
 		    </div>		      
 
 		   	<nav id="main-nav-wrap">
@@ -64,8 +65,9 @@
 						<li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
 						<li><a class="smoothscroll"  href="#portfolio" title="">Interest</a></li>
 						<li><a class="smoothscroll"  href="#cta" title="">Award</a></li>					
-						<li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>				
+						<li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>			
 					</ul>
+					<a class="button"  href="{{url('/auth')}}" title="">Login as Admin</a>	
 				</nav>    		
    		</div> <!-- /top-bar --> 
    		
