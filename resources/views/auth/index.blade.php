@@ -18,11 +18,14 @@
                 
             @endif
             <h1>Login</h1>
-            <p>Silakan login dengan Akun Google yang kamu punya</p>
-            <a href='{{url( 'auth/redirect' )}}' class="btn border border-primary"><img width="20px"
-                    style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
-                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/1200px-Google_%22G%22_logo.svg.png" />
-                Login dengan Google</a>
+            <p>Silahkan login dengan Akun Google yang terdaftar</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+                <a href="{{ url('/') }}" class="btn btn-outline-secondary">Kembali ke Halaman Utama</a>
+                <a href='{{ url('oauth2/redirect') }}' class="btn border border-primary"><img width="20px"
+                        style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
+                        src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" />
+                    Login dengan Google</a>
+            </div>
         </div>
     </main>
 </body>

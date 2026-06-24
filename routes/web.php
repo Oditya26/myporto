@@ -28,13 +28,21 @@ Route::get('/', [depanController::class, "index"]);
 
 Route::redirect('home', 'dashboard');
 
-Route::get('/auth', [authController::class, "index"])->name('login')->middleware('guest');
+Route::get('/oauth2', [authController::class, "index"])->name('login')->middleware('guest');
 
-Route::get('/auth/logout', [authController::class, "logout"]);
+Route::get('/oauth2/logout', [authController::class, "logout"]);
 
-Route::get('/auth/redirect', [authController::class, "redirect"])->middleware('guest');
+Route::get('/auth/logout', function () {
+    return redirect('/oauth2/logout');
+});
 
-Route::get('/auth/callback', [authController::class, "callback"])->middleware('guest');
+Route::get('/oauth2/redirect', [authController::class, "redirect"])->middleware('guest');
+
+Route::get('/oauth2/callback', [authController::class, "callback"])->middleware('guest');
+
+Route::get('/auth/callback', function () {
+    return redirect('/oauth2/callback');
+})->middleware('guest');
 
 Route::prefix('dashboard')->middleware('auth')->group(
     function() {

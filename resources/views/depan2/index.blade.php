@@ -21,6 +21,12 @@
    <link rel="stylesheet" href="{{asset('depan2')}}/css/main.css">
    <link rel="stylesheet" href="{{asset('depan2')}}/css/vendor.css">
 
+   <style>
+      .logo a.active-nav,
+      .main-navigation li a.active-nav {
+         color: #11abb0 !important;
+      }
+   </style>
 
    <!-- script
    ================================================== -->   
@@ -44,6 +50,9 @@
 </head>
 
 <body id="top">
+   @php
+      $isHomePage = request()->is('/') || request()->path() === '';
+   @endphp
 
 	<!-- header 
    ================================================== -->
@@ -54,20 +63,20 @@
    			<a class="menu-toggle" href="#"><span>Menu</span></a>
 			
 	   		<div class="logo">
-		         <a href="{{url('/')}}">MENU</a>
+		         <a href="{{url('/')}}" class="{{ $isHomePage ? 'active-nav' : '' }}">MYPORTO</a>
 				
 		    </div>		      
 
 		   	<nav id="main-nav-wrap">
 					<ul class="main-navigation">
-						<li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
+						<li class="{{ $isHomePage ? 'current' : '' }}"><a class="smoothscroll {{ $isHomePage ? 'active-nav' : '' }}" href="#intro" title="">Home</a></li>
 						<li><a class="smoothscroll"  href="#about" title="">About</a></li>
 						<li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
 						<li><a class="smoothscroll"  href="#portfolio" title="">Interest</a></li>
 						<li><a class="smoothscroll"  href="#cta" title="">Award</a></li>					
 						<li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>			
 					</ul>
-					<a class="button"  href="{{url('/auth')}}" title="">Login as Admin</a>	
+					<a class="button" href="{{ url('/oauth2') }}" title="">Login as Admin</a>	
 				</nav>    		
    		</div> <!-- /top-bar --> 
    		

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Two\InvalidStateException;
 
 class authController extends Controller
 {
@@ -19,7 +20,14 @@ class authController extends Controller
     }
 
     function callback() {
-        $user = Socialite::driver('google')->user();
+        try {
+            $user = Socialite::driver('google')->user();
+        } catch (InvalidStateException $e) {
+            return redirect()->to('/oauth2')->with('error', 'Sesi login Google kedaluwarsa. Silakan coba lagi.');
+        } catch (\Throwable $e) {
+            return redirect()->to('/oauth2')->with('error', 'Gagal menyelesaikan login Google.');
+        }
+
         $id = $user->id;
         $email = $user->email;
         $name = $user->name;
@@ -40,10 +48,10 @@ class authController extends Controller
                 ]
             );
             Auth::login($user);
-            return redirect()->to('dashboard');
+            return redirect()->to('/dashboard');
         }
         else{
-            return redirect()->to('auth')->with('error','Email tidak terdaftar.');
+            return redirect()->to('/oauth2')->with('error','Email tidak terdaftar.');
         }
 
     }
@@ -51,6 +59,6 @@ class authController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->to('auth');
+        return redirect()->to('/oauth2');
     }
 }

@@ -44,6 +44,14 @@
 
 </head>
 <body>
+  @php
+      $isPagesPage = request()->routeIs('halaman.*');
+      $isExperiencePage = request()->routeIs('experience.*');
+      $isEducationPage = request()->routeIs('education.*');
+      $isSkillPage = request()->routeIs('skill.*');
+      $isProfilePage = request()->routeIs('profile.*');
+      $isSettingPage = request()->routeIs('pengaturanhalaman.*');
+  @endphp
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -58,6 +66,12 @@
       </div>
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url('/') }}" target="_blank" rel="noopener noreferrer">
+              <i class="mdi mdi-home text-primary"></i>
+              <span class="ml-1">Halaman Utama</span>
+            </a>
+          </li>
           <li class="nav-item nav-profile dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
               <img src="{{asset('admin')}}/images/faces/{{Auth::user()->avatar}}" alt="profile"/>
@@ -81,38 +95,38 @@
       <!-- partial:partials/_sidebar.html -->
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('halaman.index')}}">
+          <li class="nav-item {{ $isPagesPage ? 'active' : '' }}">
+            <a class="nav-link {{ $isPagesPage ? 'active' : '' }}" href="{{route('halaman.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Pages</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('experience.index')}}">
+          <li class="nav-item {{ $isExperiencePage ? 'active' : '' }}">
+            <a class="nav-link {{ $isExperiencePage ? 'active' : '' }}" href="{{route('experience.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Experience</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('education.index')}}">
+          <li class="nav-item {{ $isEducationPage ? 'active' : '' }}">
+            <a class="nav-link {{ $isEducationPage ? 'active' : '' }}" href="{{route('education.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Education</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('skill.index')}}">
+          <li class="nav-item {{ $isSkillPage ? 'active' : '' }}">
+            <a class="nav-link {{ $isSkillPage ? 'active' : '' }}" href="{{route('skill.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Skill</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('profile.index')}}">
+          <li class="nav-item {{ $isProfilePage ? 'active' : '' }}">
+            <a class="nav-link {{ $isProfilePage ? 'active' : '' }}" href="{{route('profile.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Profile</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{route('pengaturanhalaman.index')}}">
+          <li class="nav-item {{ $isSettingPage ? 'active' : '' }}">
+            <a class="nav-link {{ $isSettingPage ? 'active' : '' }}" href="{{route('pengaturanhalaman.index')}}">
               <i class="mdi mdi-file-document-box-outline menu-icon"></i>
               <span class="menu-title">Setting Page</span>
             </a>

@@ -14,27 +14,58 @@ class profileController extends Controller
 
     function update(Request $request) {
         $request->validate([
-            '_foto' => 'image|mimes:jpeg,jpg,png,gif|max:2048',
-            '_email' => 'required|email'
+            '_foto' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:2048',
+            '_email' => 'nullable|email'
         ], [
+            '_foto.image' => 'File must be an image',
             '_foto.mimes' => 'Only can upload JPEG, JPG, PNG, and GIF',
-            '_email.required' => 'Email cant be empty',
             '_email.email' => 'Invalid email format!'
         ]);
 
-        if($request->hasFile('_foto')) {
+        $croppedImage = $request->input('_cropped_foto');
+        if ($croppedImage) {
+            $foto_lama = get_meta_value('_foto');
+            if ($foto_lama) {
+                File::delete(public_path('foto').'/'.$foto_lama);
+            }
+
+            $matches = [];
+            preg_match('/^data:(image\/(png|jpeg|jpg|gif));base64,/', $croppedImage, $matches);
+            $ext = isset($matches[2]) ? $matches[2] : 'png';
+            if ($ext === 'jpg') {
+                $ext = 'jpeg';
+            }
+
+            $foto_baru = date('ymdhis').'.'.$ext;
+            $foto_path = public_path('foto').'/'.$foto_baru;
+            $data = substr($croppedImage, strpos($croppedImage, ',') + 1);
+            $binary = base64_decode($data, true);
+            if ($binary !== false) {
+                File::ensureDirectoryExists(public_path('foto'));
+                file_put_contents($foto_path, $binary);
+                metadata::updateOrCreate(['meta_key'=>'_foto'], ['meta_value'=>$foto_baru]);
+            }
+        } elseif($request->hasFile('_foto')) {
             $foto_file = $request->file('_foto');
             $foto_ekstensi = $foto_file->extension();
             $foto_baru = date('ymdhis').".$foto_ekstensi";
-            $foto_file->move(public_path('foto'), $foto_baru);
-            //kalau ada update foto
-            $foto_lama = get_meta_value('_foto');
-            File::delete(public_path('foto')."/".$foto_lama);
+            $foto_path = public_path('foto').'/'.$foto_baru;
 
+            $foto_lama = get_meta_value('_foto');
+            if ($foto_lama) {
+                File::delete(public_path('foto').'/'.$foto_lama);
+            }
+
+            File::ensureDirectoryExists(public_path('foto'));
+            $foto_file->move(public_path('foto'), $foto_baru);
             metadata::updateOrCreate(['meta_key'=>'_foto'], ['meta_value'=>$foto_baru]);
         }
 
-        metadata::updateOrCreate(['meta_key'=>'_email'], ['meta_value' => $request->_email]);
+        $email = $request->filled('_email') ? $request->input('_email') : (auth()->check() ? auth()->user()->email : null);
+        if ($email) {
+            metadata::updateOrCreate(['meta_key'=>'_email'], ['meta_value' => $email]);
+        }
+
         metadata::updateOrCreate(['meta_key'=>'_kota'], ['meta_value' => $request->_kota]);
         metadata::updateOrCreate(['meta_key'=>'_provinsi'], ['meta_value' => $request->_provinsi]);
         metadata::updateOrCreate(['meta_key'=>'_nohp'], ['meta_value' => $request->_nohp]);
